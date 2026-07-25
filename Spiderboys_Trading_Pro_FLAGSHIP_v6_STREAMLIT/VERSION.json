@@ -1,0 +1,6 @@
+{
+  "name": "Spiderboys Trading Pro Flagship",
+  "version": "6.0.0",
+  "mode": "Streamlit demo/training",
+  "entrypoint": "app.py"
+}

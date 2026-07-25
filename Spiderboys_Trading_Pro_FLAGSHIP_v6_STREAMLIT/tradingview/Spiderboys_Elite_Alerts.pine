@@ -1,0 +1,60 @@
+//@version=6
+indicator("Spiderboys Elite Alerts v1", overlay=true, max_labels_count=200)
+
+showVWAP = input.bool(true, "Show VWAP")
+showEMAs = input.bool(true, "Show EMA 9/20")
+orbMinutes = input.int(5, "Opening range minutes", minval=1, maxval=30)
+volumeMultiplier = input.float(2.0, "Volume expansion multiplier", minval=1.0, step=0.1)
+alertOnClose = input.bool(true, "Confirm alerts on bar close")
+
+vwapLine = ta.vwap(hlc3)
+ema9 = ta.ema(close, 9)
+ema20 = ta.ema(close, 20)
+volAvg = ta.sma(volume, 20)
+volumeExpansion = volume > volAvg * volumeMultiplier
+
+newDay = ta.change(time("D")) != 0
+var float orbHigh = na
+var float orbLow = na
+var int sessionStart = na
+if newDay
+    orbHigh := na
+    orbLow := na
+    sessionStart := time
+minutesFromStart = na(sessionStart) ? na : (time - sessionStart) / 60000
+inOpeningRange = not na(minutesFromStart) and minutesFromStart < orbMinutes
+if inOpeningRange
+    orbHigh := na(orbHigh) ? high : math.max(orbHigh, high)
+    orbLow := na(orbLow) ? low : math.min(orbLow, low)
+
+confirmed = alertOnClose ? barstate.isconfirmed : true
+vwapReclaim = confirmed and ta.crossover(close, vwapLine) and ema9 > ema20
+emaMomentum = confirmed and ta.crossover(ema9, ema20) and close > vwapLine
+orbBreak = confirmed and not inOpeningRange and not na(orbHigh) and ta.crossover(close, orbHigh)
+volumeBreak = confirmed and volumeExpansion and close > open and close > vwapLine
+
+plot(showVWAP ? vwapLine : na, "VWAP", linewidth=2)
+plot(showEMAs ? ema9 : na, "EMA 9")
+plot(showEMAs ? ema20 : na, "EMA 20")
+plot(orbHigh, "ORB High", style=plot.style_linebr)
+plot(orbLow, "ORB Low", style=plot.style_linebr)
+
+plotshape(vwapReclaim, title="VWAP Reclaim", text="VWAP", style=shape.labelup, location=location.belowbar, size=size.tiny)
+plotshape(emaMomentum, title="EMA Momentum", text="9/20", style=shape.labelup, location=location.belowbar, size=size.tiny)
+plotshape(orbBreak, title="Opening Range Break", text="ORB", style=shape.labelup, location=location.belowbar, size=size.tiny)
+plotshape(volumeBreak, title="Volume Expansion", text="VOL", style=shape.labelup, location=location.belowbar, size=size.tiny)
+
+f_json(signal) => '{"symbol":"' + syminfo.tickerid + '","signal":"' + signal + '","price":' + str.tostring(close) + ',"timeframe":"' + timeframe.period + '","event_time":"' + str.tostring(time) + '"}'
+if vwapReclaim
+    alert(f_json("VWAP_RECLAIM"), alert.freq_once_per_bar_close)
+if emaMomentum
+    alert(f_json("EMA_9_20_MOMENTUM"), alert.freq_once_per_bar_close)
+if orbBreak
+    alert(f_json("OPENING_RANGE_BREAK"), alert.freq_once_per_bar_close)
+if volumeBreak
+    alert(f_json("VOLUME_EXPANSION"), alert.freq_once_per_bar_close)
+
+alertcondition(vwapReclaim, "Spiderboys VWAP Reclaim", "VWAP reclaim on {{exchange}}:{{ticker}} at {{close}}")
+alertcondition(emaMomentum, "Spiderboys EMA Momentum", "EMA momentum on {{exchange}}:{{ticker}} at {{close}}")
+alertcondition(orbBreak, "Spiderboys Opening Range Break", "Opening range break on {{exchange}}:{{ticker}} at {{close}}")
+alertcondition(volumeBreak, "Spiderboys Volume Expansion", "Volume expansion on {{exchange}}:{{ticker}} at {{close}}")
