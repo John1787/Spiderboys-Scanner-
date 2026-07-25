@@ -1,0 +1,80 @@
+//@version=6
+indicator("Spiderboys Watchlist Radar v1", overlay=false, dynamic_requests=true, calc_bars_count=250)
+
+// TradingView workaround: one Pine script scans a fixed watchlist on the chart.
+// Edit the symbols in Settings. Create one alert using "Any alert() function call".
+
+signalMode = input.string("Any", "Signal mode", options=["Any", "VWAP Reclaim", "EMA Momentum", "Volume Break"])
+volumeMultiplier = input.float(2.0, "Volume multiplier", minval=1.0, step=0.1)
+minScore = input.int(60, "Minimum radar score", minval=0, maxval=100)
+confirmClose = input.bool(true, "Confirm on bar close")
+showOnlySignals = input.bool(false, "Show only active signals")
+
+s01 = input.symbol("NASDAQ:SOUN", "01")
+s02 = input.symbol("NASDAQ:IONQ", "02")
+s03 = input.symbol("NASDAQ:RGTI", "03")
+s04 = input.symbol("NYSE:PLTR", "04")
+s05 = input.symbol("NASDAQ:RKLB", "05")
+s06 = input.symbol("NASDAQ:LUNR", "06")
+s07 = input.symbol("NASDAQ:MARA", "07")
+s08 = input.symbol("NASDAQ:ACHR", "08")
+s09 = input.symbol("NYSE:JOBY", "09")
+s10 = input.symbol("NYSE:QBTS", "10")
+s11 = input.symbol("NASDAQ:BBAI", "11")
+s12 = input.symbol("NASDAQ:SERV", "12")
+
+var symbols = array.from(s01,s02,s03,s04,s05,s06,s07,s08,s09,s10,s11,s12)
+var table radar = table.new(position.top_right, 7, 13, border_width=1)
+
+f_data(sym) =>
+    request.security(sym, timeframe.period,
+      [close, ta.vwap(hlc3), ta.ema(close, 9), ta.ema(close, 20), volume, ta.sma(volume, 20), ta.rsi(close, 14)],
+      ignore_invalid_symbol=true, calc_bars_count=250)
+
+f_signal(close_, vwap_, ema9_, ema20_, vol_, volAvg_) =>
+    confirmed = confirmClose ? barstate.isconfirmed : true
+    vwapReclaim = confirmed and close_ > vwap_ and close_[1] <= vwap_[1] and ema9_ > ema20_
+    emaMomentum = confirmed and ema9_ > ema20_ and ema9_[1] <= ema20_[1] and close_ > vwap_
+    volumeBreak = confirmed and vol_ > volAvg_ * volumeMultiplier and close_ > vwap_ and ema9_ > ema20_
+    active = signalMode == "VWAP Reclaim" ? vwapReclaim : signalMode == "EMA Momentum" ? emaMomentum : signalMode == "Volume Break" ? volumeBreak : (vwapReclaim or emaMomentum or volumeBreak)
+    name = vwapReclaim ? "VWAP" : emaMomentum ? "EMA" : volumeBreak ? "VOL" : "—"
+    [active, name]
+
+f_score(close_, vwap_, ema9_, ema20_, vol_, volAvg_, rsi_) =>
+    trendPts = close_ > vwap_ ? 25 : 0
+    emaPts = ema9_ > ema20_ ? 25 : 0
+    rvol = volAvg_ > 0 ? vol_ / volAvg_ : 0.0
+    volumePts = math.min(30.0, rvol * 10.0)
+    rsiPts = rsi_ >= 50 and rsi_ <= 75 ? 20 : rsi_ > 75 ? 8 : 0
+    math.round(trendPts + emaPts + volumePts + rsiPts)
+
+if barstate.isfirst
+    table.cell(radar, 0, 0, "Symbol", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 1, 0, "Price", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 2, 0, "RVOL", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 3, 0, "VWAP", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 4, 0, "Trend", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 5, 0, "Score", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+    table.cell(radar, 6, 0, "Signal", bgcolor=color.rgb(28, 38, 52), text_color=color.white)
+
+for i = 0 to array.size(symbols) - 1
+    sym = array.get(symbols, i)
+    [c, vwapVal, e9, e20, volVal, volAvg, rsiVal] = f_data(sym)
+    rvol = volAvg > 0 ? volVal / volAvg : na
+    score = f_score(c, vwapVal, e9, e20, volVal, volAvg, rsiVal)
+    [activeRaw, signalName] = f_signal(c, vwapVal, e9, e20, volVal, volAvg)
+    active = activeRaw and score >= minScore
+    rowVisible = not showOnlySignals or active
+    bg = active ? color.new(color.green, 72) : score >= minScore ? color.new(color.orange, 78) : color.new(color.gray, 90)
+    table.cell(radar, 0, i + 1, rowVisible ? sym : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 1, i + 1, rowVisible ? str.tostring(c, format.mintick) : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 2, i + 1, rowVisible ? str.tostring(rvol, "#.##") + "x" : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 3, i + 1, rowVisible ? (c > vwapVal ? "Above" : "Below") : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 4, i + 1, rowVisible ? (e9 > e20 ? "9>20" : "9<20") : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 5, i + 1, rowVisible ? str.tostring(score) : "", bgcolor=bg, text_color=color.white)
+    table.cell(radar, 6, i + 1, rowVisible ? (active ? signalName : "—") : "", bgcolor=bg, text_color=color.white)
+    if active and not active[1]
+        payload = '{"source":"SPIDERBOYS_TV_RADAR","symbol":"' + sym + '","signal":"' + signalName + '","score":' + str.tostring(score) + ',"price":' + str.tostring(c) + ',"rvol":' + str.tostring(rvol) + ',"timeframe":"' + timeframe.period + '","event_time":' + str.tostring(time) + '}'
+        alert(payload, alert.freq_once_per_bar_close)
+
+plot(na, display=display.none)
