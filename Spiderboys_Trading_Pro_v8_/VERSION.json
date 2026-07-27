@@ -1,0 +1,20 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "8.0.0",
+  "edition": "Spider AI Command Center",
+  "major_fixes": [
+    "Fixed Trade Plan ValueError caused by inconsistent chart return values",
+    "Unified exception-safe market payload across core workspaces",
+    "All data fallbacks are explicitly labeled"
+  ],
+  "features": [
+    "Spider AI Command Center",
+    "Rule-based Spider Score and setup summary",
+    "Shared ticker across app",
+    "Saved session watchlist",
+    "Live quote, chart, profile and news payload",
+    "Interactive trade plan",
+    "Visual performance analytics"
+  ],
+  "live_order_submission": false
+}
