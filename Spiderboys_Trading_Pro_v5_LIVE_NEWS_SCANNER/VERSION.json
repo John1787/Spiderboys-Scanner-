@@ -1,8 +1,0 @@
-{
-  "product": "Spiderboys Trading Pro",
-  "version": "5.0.0",
-  "edition": "Live News and Watchlist Scanner",
-  "live_providers": ["Finnhub", "Financial Modeling Prep", "Alpaca optional"],
-  "live_order_submission": false,
-  "demo_fallback": true
-}
