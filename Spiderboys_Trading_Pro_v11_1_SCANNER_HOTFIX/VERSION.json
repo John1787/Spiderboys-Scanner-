@@ -1,0 +1,12 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "11.1.0",
+  "edition": "Scanner Terminal Hotfix",
+  "fixes": [
+    "Removed matplotlib-dependent pandas background gradient",
+    "Added dependency-free Spider Score cell coloring",
+    "Added safe plain-table fallback if styling ever fails",
+    "Protected both Command Center and full Live Scanner tables"
+  ],
+  "live_order_submission": false
+}
