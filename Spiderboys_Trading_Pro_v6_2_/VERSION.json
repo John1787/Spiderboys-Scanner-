@@ -1,0 +1,14 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "6.2.0",
+  "edition": "Clean Simple",
+  "changes": [
+    "Eight-item primary navigation",
+    "Secondary tools moved under More Tools",
+    "Fixed DeltaGenerator documentation display bug",
+    "Updated FMP stable news endpoints",
+    "Cleaner news table and expandable details",
+    "Compact header and higher contrast controls"
+  ],
+  "live_order_submission": false
+}
