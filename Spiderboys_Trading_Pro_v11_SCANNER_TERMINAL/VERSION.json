@@ -1,0 +1,28 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "11.0.0",
+  "edition": "Scanner Terminal",
+  "features": [
+    "HOD Momentum scanner",
+    "Top Gappers scanner",
+    "Volume Surge scanner",
+    "Low Float scanner",
+    "News Catalyst scanner",
+    "Color-coded dense scanner tables",
+    "News flame indicators",
+    "Alert timestamps",
+    "Daily and five-minute relative volume metrics",
+    "Row-to-ticker linking",
+    "Synchronized 1m, 5m, and 15m charts",
+    "Stock intelligence panel",
+    "Spider AI trade card",
+    "Collapsible scanner and intelligence panels",
+    "Responsive compact and desk modes"
+  ],
+  "data_disclosure": {
+    "scanner_metrics": "Training dataset in this build",
+    "quotes_profiles_news": "Live when Finnhub endpoints respond",
+    "intraday_charts": "Live only when provider plan supports bars; otherwise labeled demo/unavailable"
+  },
+  "live_order_submission": false
+}
