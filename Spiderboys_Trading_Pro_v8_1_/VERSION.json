@@ -1,0 +1,13 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "8.1.0",
+  "edition": "Spider AI Command Center Hotfix",
+  "hotfix": [
+    "Restored missing page navigation assignment",
+    "Restored complete sidebar application shell",
+    "Added defensive default page guard",
+    "Preserved unified market-data engine",
+    "Preserved Trade Plan crash fix"
+  ],
+  "live_order_submission": false
+}
