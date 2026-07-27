@@ -1,0 +1,17 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "7.0.0",
+  "edition": "Integrated Live Ticker Workstation",
+  "features": [
+    "One shared active ticker across core workspaces",
+    "Editable arbitrary ticker search",
+    "FMP 1m/5m/15m/30m live intraday charts",
+    "Explicit LIVE, DEMO, or UNAVAILABLE chart labels",
+    "Scanner row selection links the ticker across the app",
+    "Live-derived trade planner levels and position sizing",
+    "Interactive pre-trade checklist and downloadable plan",
+    "Home live quote summary",
+    "Improved chart and table contrast"
+  ],
+  "live_order_submission": false
+}
