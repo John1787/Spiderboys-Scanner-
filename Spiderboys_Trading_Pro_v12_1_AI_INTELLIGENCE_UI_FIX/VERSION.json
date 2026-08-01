@@ -1,0 +1,31 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "12.1.0",
+  "edition": "AI Intelligence + UI Fix",
+  "fixes": [
+    "Removed custom scanner and intelligence collapse controls",
+    "Scanner, chart, and intelligence panels remain visible in Desk mode",
+    "Changed white timeframe controls to dark professional controls",
+    "Changed minute-chart containers and placeholders to dark navy",
+    "Simplified restricted-provider error messages"
+  ],
+  "trade_plan_intelligence": [
+    "Recent daily structure",
+    "Three-session and five-session movement",
+    "Recent support and resistance",
+    "Higher-high / higher-low structure",
+    "Volume acceleration",
+    "Current quote movement",
+    "Recent news sentiment and catalyst/risk language",
+    "Intraday VWAP and EMA structure when available",
+    "Bullish and bearish confirmation scenarios",
+    "Long and short position construction"
+  ],
+  "history_sources": [
+    "Alpaca daily bars when credentials are configured",
+    "FMP light/full end-of-day history fallback",
+    "Clearly labeled bundled training fallback for included demo symbols"
+  ],
+  "disclosure": "Directional intelligence is scenario-based and does not predict or guarantee future price movement.",
+  "live_order_submission": false
+}
