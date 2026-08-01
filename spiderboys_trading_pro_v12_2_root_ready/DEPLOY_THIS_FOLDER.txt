@@ -1,0 +1,2 @@
+Upload the CONTENTS of this folder directly to the GitHub repository root.
+Set the Streamlit Main file path to: app.py
