@@ -1,7 +1,0 @@
-{
-  "name": "Spiderboys Trading Pro",
-  "version": "6.2.0",
-  "channel": "stable",
-  "mode": "demo-training",
-  "entrypoint": "app.py"
-}
