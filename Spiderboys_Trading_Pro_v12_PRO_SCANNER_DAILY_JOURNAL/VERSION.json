@@ -1,0 +1,36 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "12.0.0",
+  "edition": "Pro Scanner + Daily Journal",
+  "scanner_views": [
+    "Premarket Gap",
+    "HOD Momentum",
+    "Top Gappers",
+    "5-Min Surge",
+    "Close to High",
+    "Low Float Leaders",
+    "News Catalysts",
+    "First Pullback Ready",
+    "Continuation",
+    "Reversal Watch",
+    "After-Hours Movers"
+  ],
+  "journal_features": [
+    "Fast daily trade entry",
+    "Automatic P/L and R-multiple calculation",
+    "Editable daily log",
+    "Daily review notes",
+    "P/L calendar",
+    "Equity curve",
+    "Setup and emotion analytics",
+    "CSV import and export",
+    "Blank journal template"
+  ],
+  "data_disclosure": {
+    "scanner_metrics": "Training-derived in this build",
+    "quotes_profiles_news": "Live when connected endpoints respond",
+    "intraday_charts": "Live only when the provider plan includes bar data",
+    "journal_storage": "Active Streamlit session; export CSV for permanent backup"
+  },
+  "live_order_submission": false
+}
