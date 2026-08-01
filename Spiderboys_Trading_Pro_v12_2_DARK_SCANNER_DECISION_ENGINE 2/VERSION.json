@@ -1,0 +1,32 @@
+{
+  "product": "Spiderboys Trading Pro",
+  "version": "12.2.0",
+  "edition": "Dark Scanner Decision Engine",
+  "interface_fixes": [
+    "Replaced white scanner cells with dark slate and charcoal backgrounds",
+    "Changed scanner select boxes and inputs to dark terminal controls",
+    "Preserved muted green, amber, cyan, and red signal colors",
+    "Added dark fallback tables so styling failures do not return a white scanner"
+  ],
+  "scanner_intelligence": [
+    "Momentum Quality score",
+    "READY / WAIT / AVOID decision",
+    "LOW / MODERATE / HIGH structural risk",
+    "Extension and chase-risk detection",
+    "Spread and room-to-resistance checks",
+    "VWAP, catalyst, pullback, float, gap, and RVOL confluence",
+    "News dilution, offering, reverse-split, legal, downgrade, and delisting risk detection",
+    "Live SPY and QQQ market-alignment check when Finnhub is connected",
+    "Daily P/L loss lock and maximum-trade guard",
+    "Risk-based position-size preview",
+    "One-R and two-R quick targets"
+  ],
+  "data_disclosure": {
+    "scanner_metrics": "Training-derived in this build",
+    "quotes_profiles_news": "Live when configured provider endpoints respond",
+    "market_alignment": "Live SPY/QQQ data when Finnhub is connected",
+    "journal_storage": "Active Streamlit session; export CSV for permanent backup"
+  },
+  "disclaimer": "The decision engine is transparent rule-based analysis, not a prediction, guarantee, or automatic trade signal.",
+  "live_order_submission": false
+}
